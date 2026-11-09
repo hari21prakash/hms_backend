@@ -195,6 +195,8 @@ await using (var scope = app.Services.CreateAsyncScope())
     }
 
     await BootstrapAdminSeeder.SeedAsync(app.Configuration, dbContext);
+    // Repair: Doctor/Nurse logins created earlier without a profile row.
+    await StaffAccountService.BackfillProfilesAsync(dbContext);
 }
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
